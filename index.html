@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Votaciones Los Aires de Magdalena</title>
+<meta name="description" content="Elección de la Junta Directiva de Propietarios, gestión 2026-2028">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EAF0EF; --paper:#FBFCFB; --ink:#15303D; --muted:#566D77; --line:#C6D4D3;
+  --accent:#0F6E62; --accent-ink:#FFFFFF; --mark:#233E9E; --soft:#DCE8E6; --err:#B42318; --ok:#0F6E62;
+  --display:"Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --body:"Atkinson Hyperlegible", "Verdana", "Segoe UI", system-ui, sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E191E; --paper:#15242B; --ink:#E4EDED; --muted:#9BB0B6; --line:#2B3F47;
+    --accent:#3DB5A2; --accent-ink:#06201C; --mark:#9DB2FF; --soft:#1B3038; --err:#FF8A7A; --ok:#3DB5A2;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E191E; --paper:#15242B; --ink:#E4EDED; --muted:#9BB0B6; --line:#2B3F47;
+  --accent:#3DB5A2; --accent-ink:#06201C; --mark:#9DB2FF; --soft:#1B3038; --err:#FF8A7A; --ok:#3DB5A2;
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:1.0625rem;line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:680px;margin:0 auto;padding:1.5rem 1.1rem 3rem}
+header.top{padding:1.6rem 0 1.4rem}
+.brand{font-family:var(--display);font-weight:800;font-size:clamp(2.1rem,7vw,3.3rem);line-height:.98;letter-spacing:-.02em;margin:0}
+.brand small{display:block;font-weight:500;font-size:.42em;letter-spacing:0;margin-top:.55rem;color:var(--muted)}
+.term{display:inline-flex;gap:.5rem;align-items:center;margin-top:1rem;padding:.35rem .8rem;border:1.5px solid var(--ink);border-radius:999px;font-weight:700;font-size:.95rem}
+.term::before{content:"";width:.55rem;height:.55rem;border-radius:50%;background:var(--accent)}
+.steps{display:flex;gap:.4rem;margin:1.2rem 0 1rem;padding:0;list-style:none;font-size:.92rem;color:var(--muted)}
+.steps li{flex:1;border-top:4px solid var(--line);padding-top:.4rem}
+.steps li.on{border-color:var(--accent);color:var(--ink);font-weight:700}
+.steps li.done{border-color:var(--ink)}
+.sheet{background:var(--paper);border:1.5px solid var(--line);border-radius:14px;padding:1.4rem 1.2rem}
+h2{font-family:var(--display);font-weight:700;font-size:1.55rem;line-height:1.15;margin:0 0 .4rem}
+h3{font-family:var(--display);font-weight:700;font-size:1.2rem;margin:0}
+p.lead{margin:0 0 1.2rem;color:var(--muted)}
+label.f{display:block;font-weight:700;margin:1rem 0 .35rem}
+.hint{font-weight:400;color:var(--muted);font-size:.92rem}
+input[type=text],input[type=password],select{width:100%;font:inherit;font-size:1.15rem;padding:.8rem .9rem;border:1.5px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink)}
+input:focus-visible,select:focus-visible,button:focus-visible,.opt:focus-within{outline:3px solid var(--mark);outline-offset:2px}
+.row{display:grid;grid-template-columns:150px 1fr;gap:.6rem}
+@media (max-width:420px){.row{grid-template-columns:1fr}}
+.consent{display:flex;gap:.7rem;align-items:flex-start;margin:1.2rem 0 0;font-size:.95rem;color:var(--muted)}
+.consent input{width:1.4rem;height:1.4rem;margin-top:.1rem;accent-color:var(--accent);flex:none}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;font:inherit;font-weight:700;font-size:1.1rem;padding:.9rem 1.4rem;border-radius:10px;border:1.5px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer;min-height:52px}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.danger{border-color:var(--err);color:var(--err)}
+.btn.small{font-size:.95rem;padding:.5rem .9rem;min-height:40px}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.actions{display:flex;gap:.7rem;flex-wrap:wrap;margin-top:1.4rem}
+.actions .btn.primary{flex:1}
+.msg{margin-top:1rem;padding:.8rem 1rem;border-radius:10px;font-weight:700;display:none}
+.msg.show{display:block}
+.msg.err{background:color-mix(in srgb,var(--err) 12%,transparent);color:var(--err)}
+.msg.info{background:var(--soft);color:var(--ink)}
+.voter{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;padding:.7rem 1rem;background:var(--soft);border-radius:10px;margin-bottom:1.2rem;font-size:.95rem}
+.cargo{border-top:2px dashed var(--line);padding:1.2rem 0 .4rem}
+.cargo:first-of-type{border-top:0;padding-top:.2rem}
+.cargo-head{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;margin-bottom:.7rem}
+.cargo-head .req{font-size:.88rem;color:var(--muted)}
+.opts{display:grid;gap:.55rem}
+.opt{position:relative;display:flex;align-items:center;gap:1rem;padding:.8rem .9rem;border:1.5px solid var(--line);border-radius:10px;cursor:pointer;background:var(--paper)}
+.opt input{position:absolute;opacity:0;pointer-events:none}
+.opt .box{flex:none;width:46px;height:46px;border:2.5px solid var(--ink);border-radius:4px;display:grid;place-items:center;background:var(--paper)}
+.opt .box svg{width:36px;height:36px;overflow:visible}
+.opt .box path{fill:none;stroke:var(--mark);stroke-width:5;stroke-linecap:round;stroke-dasharray:50;stroke-dashoffset:50}
+.opt input:checked ~ .box path{animation:draw .22s ease-out forwards}
+.opt input:checked ~ .box path:last-child{animation-delay:.14s}
+.opt:has(input:checked){border-color:var(--mark);background:color-mix(in srgb,var(--mark) 7%,var(--paper))}
+.opt .who{display:flex;flex-direction:column;line-height:1.25}
+.opt .who b{font-size:1.12rem}
+.opt .who span{font-size:.9rem;color:var(--muted)}
+.opt.blank .who b{font-weight:400;font-style:italic}
+@keyframes draw{to{stroke-dashoffset:0}}
+@media (prefers-reduced-motion:reduce){.opt input:checked ~ .box path{animation:none;stroke-dashoffset:0}}
+.empty{padding:1rem;border:1.5px dashed var(--line);border-radius:10px;color:var(--muted)}
+.done-mark{width:84px;height:84px;margin:0 0 1rem}
+.done-mark path{fill:none;stroke:var(--ok);stroke-width:7;stroke-linecap:round;stroke-linejoin:round}
+footer.foot{margin-top:2rem;display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;font-size:.88rem;color:var(--muted)}
+.linkbtn{font:inherit;background:none;border:0;color:var(--muted);text-decoration:underline;cursor:pointer;padding:.4rem 0}
+dialog{border:1.5px solid var(--line);border-radius:14px;background:var(--paper);color:var(--ink);padding:1.4rem 1.2rem;width:min(92vw,460px)}
+dialog::backdrop{background:rgba(10,25,30,.55)}
+.summary{list-style:none;margin:1rem 0 0;padding:0}
+.summary li{display:flex;justify-content:space-between;gap:1rem;padding:.6rem 0;border-bottom:1px solid var(--line)}
+.summary li span{color:var(--muted)}
+.hidden{display:none !important}
+/* Admin */
+.tabs{display:flex;gap:.4rem;flex-wrap:wrap;margin:0 0 1rem}
+.tab{font:inherit;font-weight:700;padding:.55rem .95rem;border-radius:999px;border:1.5px solid var(--line);background:transparent;color:var(--ink);cursor:pointer}
+.tab[aria-selected=true]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.stats{display:flex;gap:1.6rem;flex-wrap:wrap;margin-bottom:1.2rem}
+.stats div b{display:block;font-family:var(--display);font-size:2rem;line-height:1}
+.stats div span{font-size:.9rem;color:var(--muted)}
+.res{margin:0 0 1.4rem}
+.res h3{margin-bottom:.6rem}
+.bar{margin:.45rem 0}
+.bar .lbl{display:flex;justify-content:space-between;gap:1rem;font-size:.98rem}
+.bar .track{height:12px;background:var(--soft);border-radius:6px;overflow:hidden;margin-top:.2rem}
+.bar .fill{height:100%;background:var(--muted);border-radius:6px}
+.bar.lead .fill{background:var(--accent)}
+.bar.lead .lbl b::after{content:" · mayor votación";font-weight:400;color:var(--accent)}
+.tablewrap{overflow-x:auto;border:1.5px solid var(--line);border-radius:10px}
+table{border-collapse:collapse;width:100%;font-size:.95rem}
+th,td{text-align:left;padding:.55rem .7rem;border-bottom:1px solid var(--line);white-space:nowrap}
+th{background:var(--soft)}
+.cand-list{list-style:none;padding:0;margin:.5rem 0}
+.cand-list li{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:.5rem 0;border-bottom:1px solid var(--line)}
+.addrow{display:grid;grid-template-columns:1fr 110px auto;gap:.5rem;margin:.4rem 0 1.4rem}
+.addrow input{font-size:1rem;padding:.6rem .7rem}
+@media (max-width:460px){.addrow{grid-template-columns:1fr 1fr}.addrow .btn{grid-column:1/-1}}
+.setting{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:.9rem 0;border-bottom:1px solid var(--line)}
+.setting p{margin:.15rem 0 0;font-size:.9rem;color:var(--muted)}
+.switch{width:3.2rem;height:1.8rem;accent-color:var(--accent)}
+/* ---- v2 ---- */
+.term-row{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin-top:1rem}
+.term-row .term{margin-top:0}
+.sched{font-size:.95rem;color:var(--muted)}
+.btn.danger-fill{background:var(--err);border-color:var(--err);color:#fff}
+.receipt{border:2px solid var(--ink);border-radius:12px;padding:1.1rem 1.2rem;margin:0 0 1.2rem;background:var(--bg)}
+.receipt .r-dpto{font-family:var(--display);font-weight:800;font-size:3rem;line-height:1;margin:.2rem 0 .4rem}
+.receipt p{margin:.2rem 0}
+.receipt .code{font-weight:700;letter-spacing:.04em}
+.drop{display:block;border:2px dashed var(--line);border-radius:12px;padding:1.2rem;text-align:center;cursor:pointer;background:var(--bg)}
+.drop:hover,.drop:focus-within{border-color:var(--accent)}
+.drop input{position:absolute;opacity:0;width:1px;height:1px}
+.drop b{display:block;font-size:1.05rem}
+.preview{margin:1rem 0;padding:1rem;border:1.5px solid var(--line);border-radius:10px}
+.preview ul{margin:.4rem 0 0;padding-left:1.2rem;font-size:.92rem;color:var(--muted)}
+.radio-row{display:flex;gap:.6rem;align-items:flex-start;margin:.5rem 0}
+.radio-row input{width:1.2rem;height:1.2rem;margin-top:.2rem;accent-color:var(--accent)}
+.sched-grid{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin:.6rem 0}
+@media (max-width:460px){.sched-grid{grid-template-columns:1fr}}
+input[type=datetime-local]{width:100%;font:inherit;font-size:1rem;padding:.6rem .7rem;border:1.5px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink)}
+.pill{display:inline-block;padding:.15rem .6rem;border-radius:999px;font-size:.85rem;font-weight:700;background:var(--soft)}
+.pill.ok{background:color-mix(in srgb,var(--ok) 18%,transparent);color:var(--ok)}
+.pill.no{background:color-mix(in srgb,var(--err) 14%,transparent);color:var(--err)}
+.section-t{margin:1.4rem 0 .4rem}
+.wrap.wide{max-width:980px}
+td.num{text-align:right}
+.help{margin-top:1.4rem;padding:1.1rem 1.2rem;border:1.5px solid var(--line);border-radius:14px;background:var(--paper)}
+.help h3{margin:0 0 .3rem}
+.help p{margin:0;color:var(--muted);font-size:.95rem}
+.help ul{list-style:none;padding:0;margin:.7rem 0 0;display:grid;gap:.5rem}
+.help a{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;padding:.7rem .9rem;border:1.5px solid var(--line);border-radius:10px;color:var(--ink);text-decoration:none;font-weight:700}
+.help a:hover{border-color:var(--accent)}
+.help a span{font-weight:400;color:var(--muted)}
+.doc-ok{color:var(--ok);font-weight:700}
+</style>
+</head>
+<body>
+<div class="wrap" id="wrap">
+  <header class="top">
+    <h1 class="brand">Votaciones Los Aires de Magdalena<small>Elección de la Junta Directiva de Propietarios</small></h1>
+    <div class="term-row"><span class="term">Gestión 2026-2028</span><span class="sched" id="sched"></span></div>
+  </header>
+
+  <ol class="steps" id="steps" aria-label="Pasos para votar">
+    <li data-s="1" class="on">1. Registro</li>
+    <li data-s="2">2. Cédula</li>
+    <li data-s="3">3. Constancia</li>
+  </ol>
+
+  <main>
+    <section class="sheet" id="v-registro">
+      <h2>Registre sus datos</h2>
+      <p class="lead">Elija su departamento e ingrese su DNI y su nombre. El comité electoral registra su voto con estos datos, la fecha y la hora; solo el comité puede consultarlos.</p>
+      <form id="f-reg" novalidate>
+        <label class="f" for="dpto">Departamento</label>
+        <select id="dpto" required><option value="">Cargando departamentos...</option></select>
+        <label class="f" for="doc">DNI</label>
+        <input type="text" id="doc" inputmode="numeric" autocomplete="off" maxlength="12" required aria-describedby="doc-hint">
+        <div class="hint" id="doc-hint">Debe coincidir con un propietario registrado en el padrón de su departamento.</div>
+        <label class="f" for="nombre">Nombres y apellidos</label>
+        <input type="text" id="nombre" autocomplete="off" required>
+        <label class="consent"><input type="checkbox" id="consent"> Autorizo el tratamiento de mis datos personales y del sentido de mi voto únicamente para esta elección, conforme a la Ley N.° 29733.</label>
+        <div class="msg" id="reg-msg" role="alert"></div>
+        <div class="actions"><button class="btn primary" type="submit" id="btn-reg">Continuar a la cédula</button></div>
+      </form>
+    </section>
+
+    <section class="sheet hidden" id="v-cedula">
+      <div class="voter" id="voter-strip"></div>
+      <h2>Cédula de votación</h2>
+      <p class="lead">Marque una opción por cada cargo. Puede elegir voto en blanco.</p>
+      <div id="ballot"></div>
+      <div class="msg" id="ced-msg" role="alert"></div>
+      <div class="actions">
+        <button class="btn" type="button" id="btn-back">Corregir mis datos</button>
+        <button class="btn primary" type="button" id="btn-review">Revisar y emitir voto</button>
+      </div>
+    </section>
+
+    <section class="sheet hidden" id="v-gracias" aria-live="polite">
+      <svg class="done-mark" viewBox="0 0 84 84" aria-hidden="true"><path d="M18 44 l16 16 l32 -36"/></svg>
+      <h2>Su voto fue registrado</h2>
+      <div class="receipt" id="receipt"></div>
+      <div class="msg" id="gr-msg" role="alert"></div>
+      <div class="actions">
+        <button class="btn" type="button" id="btn-receipt">Descargar constancia</button>
+        <button class="btn primary" type="button" id="btn-next">Siguiente votante</button>
+      </div>
+    </section>
+
+    <section class="sheet hidden" id="v-aviso">
+      <h2 id="aviso-t">Votación cerrada</h2>
+      <p class="lead" id="aviso-p"></p>
+    </section>
+
+    <section class="sheet hidden" id="v-admin">
+      <div class="cargo-head"><h2>Panel del comité electoral</h2><button class="btn small" id="btn-lock" type="button">Salir del panel</button></div>
+      <div class="tabs" role="tablist">
+        <button class="tab" role="tab" aria-selected="true" data-tab="res">Resultados</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="vot">Votantes</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="pad">Padrón</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="cand">Candidatos</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="cfg">Horario y ajustes</button>
+      </div>
+      <div class="msg" id="adm-msg" role="alert"></div>
+      <div id="t-res"></div>
+      <div id="t-vot" class="hidden"></div>
+      <div id="t-pad" class="hidden"></div>
+      <div id="t-cand" class="hidden"></div>
+      <div id="t-cfg" class="hidden"></div>
+    </section>
+  </main>
+
+  <section class="help" id="help" aria-labelledby="help-t">
+    <h3 id="help-t">Contacto del Comité Electoral</h3>
+    <p>Si tiene problemas para registrarse o votar, escriba por WhatsApp a:</p>
+    <ul id="help-list"></ul>
+  </section>
+
+  <footer class="foot">
+    <span>Comité Electoral, Los Aires de Magdalena, Magdalena del Mar</span>
+    <button class="linkbtn" id="btn-admin" type="button">Acceso del comité</button>
+  </footer>
+</div>
+
+<dialog id="dlg-confirm" aria-labelledby="dc-t">
+  <h2 id="dc-t">Confirme su voto</h2>
+  <p class="lead" style="margin:0">Una vez emitido no podrá modificarse.</p>
+  <ul class="summary" id="dc-list"></ul>
+  <div class="actions">
+    <button class="btn" type="button" id="dc-cancel">Volver a la cédula</button>
+    <button class="btn primary" type="button" id="dc-ok">Emitir voto</button>
+  </div>
+</dialog>
+
+<dialog id="dlg-ask" aria-labelledby="da-t">
+  <form id="f-ask" novalidate>
+    <h2 id="da-t"></h2>
+    <p class="lead" id="da-p" style="margin:0"></p>
+    <div id="da-fields"></div>
+    <div class="msg" id="da-msg" role="alert"></div>
+    <div class="actions">
+      <button class="btn" type="button" id="da-cancel">Cancelar</button>
+      <button class="btn primary" type="submit" id="da-ok">Aceptar</button>
+    </div>
+  </form>
+</dialog>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+(function(){
+"use strict";
+/* =========================================================
+   Configuración del edificio
+   ========================================================= */
+const CARGOS=[{key:"presidente",label:"Presidente"},{key:"tesorero",label:"Tesorero"},{key:"administrador",label:"Administrador General"}];
+const EDIF="Edificio Multifamiliar Los Aires de Magdalena";
+const DIRECCION="Jr. Tacna 1492-1494, Magdalena del Mar";
+const CONTACTOS=[{nombre:"Kerly Mantilla Díaz",wa:"933982010"},{nombre:"Jose Luis Bujaico Carlos",wa:"964479291"}];
+const fmtTel=n=>String(n).replace(/(\d{3})(\d{3})(\d{3})/,"$1\u00A0$2\u00A0$3");
+const VER_CONTACTO=" Si cree que hay un error, escriba al Comité Electoral (contactos al pie de esta página).";
+const TZ="America/Lima", TZ_OFFSET="-05:00";
+// 70 departamentos: piso 1 (101-104), pisos 2-4 (x01-x06), piso 5 (501-508), pisos 6-15 (x01-x04)
+const ESTRUCTURA=(()=>{const a=[];for(let i=1;i<=4;i++)a.push(100+i);[2,3,4].forEach(f=>{for(let i=1;i<=6;i++)a.push(f*100+i);});for(let i=1;i<=8;i++)a.push(500+i);for(let f=6;f<=15;f++)for(let i=1;i<=4;i++)a.push(f*100+i);return a.map(String);})();
+const ESTRUCTURA_SET=new Set(ESTRUCTURA);
+
+const $=id=>document.getElementById(id);
+let store=null, downloads=null, config=null, ready=false, noStoreMsg="";
+const S={voter:null,picks:{},view:"registro",resetTimer:null,adminUntil:0,unsubs:[],voters:[],ballots:[],last:null,tab:"res",importData:null};
+const P={units:new Map(),voted:new Set(),loaded:false};
+
+/* =========================================================
+   Utilidades
+   ========================================================= */
+function h(tag,attrs,...kids){const e=document.createElement(tag);if(attrs)for(const[k,v]of Object.entries(attrs)){if(v==null||v===false)continue;if(k==="class")e.className=v;else if(k.startsWith("on")&&typeof v==="function")e.addEventListener(k.slice(2),v);else if(k==="html")e.innerHTML=v;else e.setAttribute(k,v===true?"":v);}for(const c of kids.flat()){if(c==null||c===false)continue;e.append(c.nodeType?c:document.createTextNode(String(c)));}return e;}
+function msg(id,text,kind){const m=$(id);if(!m)return;m.textContent=text||"";m.className="msg"+(text?" show "+(kind||"err"):"");}
+function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
+async function retry(fn){try{return await fn();}catch(e){if(e&&e.code==="unavailable"){await sleep(400+Math.random()*600);return await fn();}throw e;}}
+async function sha(text){const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(text));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("");}
+function rid(){return[...crypto.getRandomValues(new Uint8Array(8))].map(x=>x.toString(16).padStart(2,"0")).join("");}
+function code6(){const A="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";return[...crypto.getRandomValues(new Uint8Array(6))].map(x=>A[x%A.length]).join("");}
+function normDpto(s){let t=String(s==null?"":s).toUpperCase().trim().replace(/^(DEPARTAMENTO|DEPTO|DPTO|DPT|DEP)\.?\s*/,"").replace(/[^A-Z0-9]/g,"");if(/^\d+$/.test(t))t=String(parseInt(t,10));return t;}
+function normDoc(s){let t=String(s==null?"":s).toUpperCase().replace(/[^0-9A-Z]/g,"");if(/^\d{6,7}$/.test(t))t=t.padStart(8,"0");return t;}
+function validDoc(t){return /^\d{8}$/.test(t)||/^(?=.*\d)[A-Z0-9]{9,12}$/.test(t);}
+function tipoDoc(t){return /^\d{8}$/.test(t)?"DNI":"CE";}
+function unitDnis(u){return (u&&(u.dnis||(u.doc?[u.doc]:[]))||[]).map(normDoc);}
+const HAB="HABILITADO",NOHAB="INHABILITADO";
+function habilitado(u,doc){return !!(u&&u.estados&&u.estados[doc]===HAB);}
+function unitHab(u){return unitDnis(u).some(d=>habilitado(u,d));}
+function maskDoc(d){d=String(d||"");return d.length>4?"****"+d.slice(-4):d;}
+function natSort(a,b){return String(a.dpto).localeCompare(String(b.dpto),"es",{numeric:true});}
+function parseLocal(s){return s?new Date(s+":00"+TZ_OFFSET):null;}
+function fmtFecha(iso){try{return new Date(iso).toLocaleDateString("es-PE",{weekday:"long",day:"numeric",month:"long",year:"numeric",timeZone:TZ}).replace(",","");}catch(_){return"";}}
+function fmtHora(iso){try{return new Date(iso).toLocaleTimeString("es-PE",{hour:"numeric",minute:"2-digit",hour12:true,timeZone:TZ});}catch(_){return"";}}
+function fmtCorto(iso){try{return new Date(iso).toLocaleString("es-PE",{weekday:"short",day:"numeric",month:"short",hour:"numeric",minute:"2-digit",hour12:true,timeZone:TZ});}catch(_){return"";}}
+function fmtFechaNum(iso){try{return new Date(iso).toLocaleDateString("es-PE",{day:"2-digit",month:"2-digit",year:"numeric",timeZone:TZ});}catch(_){return"";}}
+function dot(s){s=String(s);return /\.$/.test(s)?s:s+".";}
+function plural(n,a,b){return n+" "+(n===1?a:b);}
+function cap(s){return s?s.charAt(0).toUpperCase()+s.slice(1):s;}
+
+/* =========================================================
+   Almacenamiento: base de datos de claude.ai, o este navegador
+   (modo mesa de votación al publicarlo en GitHub Pages)
+   ========================================================= */
+function wrapDb(db){
+  const rows=s=>s.docs.map(d=>Object.assign({id:d.id},d.data()));
+  return{kind:"claude",
+    get:async p=>{const s=await retry(()=>db.doc(p).get());return s.exists?s.data():null;},
+    set:(p,d)=>retry(()=>db.doc(p).set(d)),
+    del:p=>retry(()=>db.doc(p).delete()),
+    list:async c=>rows(await retry(()=>db.collection(c).get())),
+    watch:(c,cb)=>db.collection(c).onSnapshot(s=>cb(rows(s)),()=>{}),
+    watchDoc:(p,cb)=>db.doc(p).onSnapshot(s=>cb(s.exists?s.data():null),()=>{})};
+}
+function makeLocalStore(){
+  const KEY="lam-votaciones-2026-2028";const subs=new Set();
+  const read=()=>{try{return JSON.parse(localStorage.getItem(KEY)||"{}")||{};}catch(_){return{};}};
+  let mem=read();
+  const emit=()=>subs.forEach(f=>{try{f();}catch(_){}});
+  const persist=()=>{try{localStorage.setItem(KEY,JSON.stringify(mem));}catch(_){}emit();};
+  window.addEventListener("storage",e=>{if(e.key===KEY){mem=read();emit();}});
+  const clone=o=>o==null?null:JSON.parse(JSON.stringify(o));
+  const col=c=>Object.keys(mem).filter(k=>{const p=k.split("/");return p.length===2&&p[0]===c;}).map(k=>Object.assign({id:k.split("/")[1]},clone(mem[k])));
+  return{kind:"local",
+    get:async p=>clone(mem[p]),
+    set:async(p,d)=>{mem[p]=clone(d);persist();},
+    del:async p=>{delete mem[p];persist();},
+    list:async c=>col(c),
+    watch:(c,cb)=>{const f=()=>cb(col(c));subs.add(f);setTimeout(f,0);return()=>subs.delete(f);},
+    watchDoc:(p,cb)=>{const f=()=>cb(clone(mem[p]));subs.add(f);setTimeout(f,0);return()=>subs.delete(f);}};
+}
+
+/* =========================================================
+   Configuración y estado de la votación
+   ========================================================= */
+function cfg(){const c=config||{};const cargos={};CARGOS.forEach(g=>{cargos[g.key]=(c.cargos&&c.cargos[g.key])||[];});
+  return{cargos,open:c.open!==false,unPorDpto:true,hash:c.hash||null,salt:c.salt||null,inicio:c.inicio||"",fin:c.fin||""};}
+async function saveCfg(patch,okText){const next=Object.assign({},cfg(),patch);
+  try{await store.set("config/main",next);config=next;if(okText!==false)msg("adm-msg",okText||"Cambios guardados.","info");return true;}
+  catch(e){msg("adm-msg","No se pudieron guardar los cambios. Revise la conexión.");return false;}}
+function estado(){const c=cfg(),now=Date.now(),ini=parseLocal(c.inicio),fin=parseLocal(c.fin);
+  if(!c.open)return{ok:false,code:"off",t:"Votación cerrada",p:"El comité electoral cerró la votación."};
+  if(ini&&now<ini.getTime())return{ok:false,code:"antes",t:"La votación aún no empieza",p:dot("La votación se abrirá el "+fmtFecha(ini)+" a las "+fmtHora(ini))};
+  if(fin&&now>=fin.getTime())return{ok:false,code:"despues",t:"Votación cerrada",p:dot("La votación cerró el "+fmtFecha(fin)+" a las "+fmtHora(fin))+" Gracias por su participación."};
+  return{ok:true,code:"abierta"};}
+function renderSchedule(){const c=cfg(),ini=parseLocal(c.inicio),fin=parseLocal(c.fin);let t="";
+  if(ini&&fin)t="Votación del "+fmtCorto(ini)+" al "+fmtCorto(fin);else if(ini)t="Abre el "+fmtCorto(ini);else if(fin)t="Cierra el "+fmtCorto(fin);
+  $("sched").textContent=t;}
+
+/* =========================================================
+   Diálogo propio (reemplaza prompt/confirm, bloqueados en el visor)
+   ========================================================= */
+function ask(o){return new Promise(res=>{
+  const d=$("dlg-ask");$("da-t").textContent=o.title||"";$("da-p").textContent=o.text||"";$("da-p").classList.toggle("hidden",!o.text);
+  const box=$("da-fields");box.textContent="";msg("da-msg","");
+  const ins=(o.fields||[]).map((f,i)=>{const id="da-f"+i;box.append(h("label",{class:"f",for:id},f.label));const inp=h("input",{id,type:f.type||"text",autocomplete:"off"});box.append(inp);return inp;});
+  const ok=$("da-ok");ok.textContent=o.ok||"Aceptar";ok.className="btn "+(o.danger?"danger-fill":"primary");
+  $("da-cancel").classList.toggle("hidden",!!o.noCancel);
+  let done=false;
+  const fin=v=>{if(done)return;done=true;d.close();res(v);};
+  d.onclose=()=>{if(d.open)return;if(!done){done=true;res(null);}};
+  $("da-cancel").onclick=()=>fin(null);
+  $("f-ask").onsubmit=ev=>{ev.preventDefault();const vals=ins.map(i=>i.value);const err=o.validate?o.validate(vals):null;if(err){msg("da-msg",err);return;}fin(ins.length?vals:true);};
+  d.showModal();setTimeout(()=>(ins[0]||ok).focus(),40);
+});}
+
+/* =========================================================
+   Vistas del votante
+   ========================================================= */
+const VIEWS=["registro","cedula","gracias","aviso","admin"];
+function show(v){S.view=v;VIEWS.forEach(x=>$("v-"+x).classList.toggle("hidden",x!==v));
+  const step={registro:1,cedula:2,gracias:3}[v];const st=$("steps");st.classList.toggle("hidden",!step);
+  st.querySelectorAll("li").forEach(li=>{const n=+li.dataset.s;li.className=n===step?"on":(n<step?"done":"");});
+  $("btn-admin").classList.toggle("hidden",v==="admin");$("help").classList.toggle("hidden",v==="admin");$("wrap").classList.toggle("wide",v==="admin");window.scrollTo(0,0);}
+function aviso(t,p){$("aviso-t").textContent=t;$("aviso-p").textContent=p;show("aviso");}
+function resetVoter(){clearTimeout(S.resetTimer);S.voter=null;S.picks={};$("f-reg").reset();autoName="";setDocHint();msg("reg-msg","");msg("ced-msg","");msg("gr-msg","");
+  if(!ready){aviso("Registro no disponible",noStoreMsg||"Cargando...");return;}
+  const e=estado();if(!e.ok){aviso(e.t,e.p);return;}
+  fillDpto();show("registro");}
+
+/* ---------- registro ---------- */
+function fillDpto(){const sel=$("dpto"),cur=sel.value;sel.textContent="";
+  const units=[...P.units.values()].sort(natSort);
+  sel.append(h("option",{value:""},!P.loaded?"Cargando departamentos...":(units.length?"Seleccione su departamento":"El comité aún no carga el padrón")));
+  units.forEach(u=>{const n=normDpto(u.dpto);sel.append(h("option",{value:n},"Dpto. "+u.dpto+(P.voted.has(n)?"  (ya votó)":(!unitHab(u)?"  (inhabilitado)":""))));});
+  if(cur&&P.units.has(cur))sel.value=cur;checkDpto(false);}
+function votedMsg(d){return"El departamento "+d+" ya votó. Se permite un solo voto por departamento, aunque tenga más de un DNI registrado."+VER_CONTACTO;}
+function nombreDe(u,doc){if(!u)return"";if(u.personas&&u.personas[doc])return u.personas[doc];if(!u.personas&&normDoc(u.doc)===doc&&u.nombre&&!/^Propietario Dpto\./.test(u.nombre))return u.nombre;return"";}
+let autoName="";
+const DOC_HINT="Debe coincidir con un propietario registrado en el padrón de su departamento.";
+function setDocHint(t,ok){const e=$("doc-hint");e.textContent=t||DOC_HINT;e.className="hint"+(ok?" doc-ok":"");}
+function lookupDoc(){const u=P.units.get($("dpto").value),doc=normDoc($("doc").value);setDocHint();
+  if(!validDoc(doc))return;
+  if(u&&unitDnis(u).includes(doc)&&!habilitado(u,doc)){setDocHint("Este DNI figura como INHABILITADO en el padrón.");return;}
+  if(u&&unitDnis(u).includes(doc)){const nm=nombreDe(u,doc);
+    if(nm&&(!$("nombre").value.trim()||$("nombre").value===autoName)){$("nombre").value=nm;autoName=nm;}
+    setDocHint(nm?"DNI encontrado en el padrón. Verifique su nombre y corríjalo si es necesario.":"DNI encontrado en el padrón del departamento "+u.dpto+". Escriba su nombre completo.",true);return;}
+  if(autoName&&$("nombre").value===autoName){$("nombre").value="";autoName="";}
+  const otro=[...P.units.values()].find(x=>unitDnis(x).includes(doc));
+  if(otro&&(!u||normDpto(otro.dpto)!==normDpto(u.dpto)))setDocHint("Este DNI figura en el padrón de otro departamento. Verifique el departamento seleccionado.");}
+$("doc").addEventListener("input",lookupDoc);$("dpto").addEventListener("change",lookupDoc);
+function noHabMsg(d){return"El departamento "+d+" figura como INHABILITADO en el padrón y no puede votar en esta elección."+VER_CONTACTO;}
+function checkDpto(announce){const n=$("dpto").value,u=P.units.get(n);const voted=!!(u&&P.voted.has(n)),nohab=!!(u&&!voted&&!unitHab(u)),blocked=voted||nohab;
+  $("btn-reg").disabled=blocked;if(voted)msg("reg-msg",votedMsg(u.dpto));else if(nohab)msg("reg-msg",noHabMsg(u.dpto));else if(announce)msg("reg-msg","");
+  return blocked;}
+$("dpto").addEventListener("change",()=>checkDpto(true));
+async function alreadyVoted(tipo,doc,dptoNorm,dptoLabel){
+  if(await store.get("dptos/d-"+dptoNorm))return votedMsg(dptoLabel);
+  if(await store.get("voters/"+tipo+"-"+doc))return"Este DNI ya registró su voto en esta elección."+VER_CONTACTO;
+  return null;}
+$("f-reg").addEventListener("submit",async ev=>{ev.preventDefault();msg("reg-msg","");
+  const e=estado();if(!e.ok){resetVoter();return;}
+  const n=$("dpto").value,u=P.units.get(n),doc=normDoc($("doc").value),nombre=$("nombre").value.trim().replace(/\s+/g," ");
+  if(!u)return msg("reg-msg","Seleccione su departamento de la lista.");
+  if(checkDpto(false))return;
+  if(!validDoc(doc))return msg("reg-msg","Ingrese un DNI válido de 8 dígitos, o un carné de extranjería de 9 a 12 caracteres.");
+  if(!unitDnis(u).includes(doc))return msg("reg-msg","El DNI ingresado no figura en el padrón del departamento "+u.dpto+". Si usted es apoderado o copropietario no registrado, comuníquese con el Comité Electoral por WhatsApp (contactos al pie de esta página).");
+  if(!habilitado(u,doc))return msg("reg-msg","Su DNI figura como INHABILITADO en el padrón del departamento "+u.dpto+" y no puede votar en esta elección."+VER_CONTACTO);
+  if(nombre.length<5||!/\s/.test(nombre))return msg("reg-msg","Escriba sus nombres y apellidos completos.");
+  if(!$("consent").checked)return msg("reg-msg","Para continuar, marque la autorización de uso de datos.");
+  const btn=$("btn-reg");btn.disabled=true;btn.textContent="Verificando...";
+  try{const tipo=tipoDoc(doc);const dup=await alreadyVoted(tipo,doc,n,u.dpto);if(dup){msg("reg-msg",dup);return;}
+    S.voter={nombre,dpto:u.dpto,dptoNorm:n,tipo,doc};S.picks={};renderBallot();show("cedula");}
+  catch(_){msg("reg-msg","No se pudo verificar el registro. Revise la conexión e intente nuevamente.");}
+  finally{btn.disabled=false;btn.textContent="Continuar a la cédula";}});
+
+/* ---------- cédula ---------- */
+const XSVG='<svg viewBox="0 0 36 36" aria-hidden="true"><path d="M7 7 L29 29"/><path d="M29 7 L7 29"/></svg>';
+function renderBallot(){const c=cfg(),root=$("ballot");root.textContent="";
+  const v=S.voter;$("voter-strip").textContent="";
+  if(v)$("voter-strip").append(h("span",null,h("b",null,v.nombre)),h("span",null,"Dpto. "+v.dpto+", "+v.tipo+" "+v.doc));
+  CARGOS.forEach(g=>{const list=c.cargos[g.key];
+    const sec=h("fieldset",{class:"cargo",style:"border:0;margin:0;padding-left:0;padding-right:0"},
+      h("legend",{class:"cargo-head",style:"width:100%;padding:0"},h("h3",null,g.label),h("span",{class:"req"},"Elija una opción")));
+    const opts=h("div",{class:"opts"});
+    if(!list.length)opts.append(h("div",{class:"empty"},"El comité aún no registra candidatos para este cargo."));
+    list.forEach(p=>opts.append(optEl(g.key,p.id,p.nombre,p.dpto?"Dpto. "+p.dpto:"")));
+    opts.append(optEl(g.key,"blanco","Voto en blanco","",true));
+    sec.append(opts);root.append(sec);});}
+function optEl(cargo,id,nombre,sub,blank){const inp=h("input",{type:"radio",name:"c-"+cargo,value:id});
+  if(S.picks[cargo]===id)inp.checked=true;
+  inp.addEventListener("change",()=>{S.picks[cargo]=id;msg("ced-msg","");});
+  return h("label",{class:"opt"+(blank?" blank":"")},inp,h("span",{class:"box",html:XSVG}),h("span",{class:"who"},h("b",null,nombre),sub?h("span",null,sub):null));}
+function pickName(cargo,id){if(id==="blanco")return"Voto en blanco";const p=cfg().cargos[cargo].find(x=>x.id===id);return p?p.nombre:"";}
+$("btn-back").addEventListener("click",()=>show("registro"));
+$("btn-review").addEventListener("click",()=>{
+  const miss=CARGOS.filter(g=>!S.picks[g.key]||(S.picks[g.key]!=="blanco"&&!pickName(g.key,S.picks[g.key])));
+  if(miss.length)return msg("ced-msg","Falta marcar una opción para: "+miss.map(m=>m.label).join(", ")+".");
+  const ul=$("dc-list");ul.textContent="";
+  CARGOS.forEach(g=>ul.append(h("li",null,h("span",null,g.label),h("b",null,pickName(g.key,S.picks[g.key])))));
+  $("dlg-confirm").showModal();});
+$("dc-cancel").addEventListener("click",()=>$("dlg-confirm").close());
+$("dc-ok").addEventListener("click",async()=>{const btn=$("dc-ok");btn.disabled=true;btn.textContent="Emitiendo...";
+  const v=S.voter,vPath="voters/"+v.tipo+"-"+v.doc,dPath="dptos/d-"+v.dptoNorm;let wrote=false;
+  try{
+    if(!estado().ok)throw{code:"closed"};
+    const dup=await alreadyVoted(v.tipo,v.doc,v.dptoNorm,v.dpto);if(dup)throw{code:"dup",text:dup};
+    const fecha=new Date().toISOString(),codigo="LAM-"+code6(),votos={};
+    CARGOS.forEach(g=>{const id=S.picks[g.key];votos[g.key]={id,nombre:pickName(g.key,id)};});
+    const rec={nombre:v.nombre,dpto:v.dpto,dptoNorm:v.dptoNorm,tipo:v.tipo,doc:v.doc,fecha,codigo,votos};
+    await store.set(vPath,rec);wrote=true;
+    await store.set(dPath,{doc:v.doc,fecha,codigo});
+    $("dlg-confirm").close();S.last=rec;S.voter=null;S.picks={};
+    renderReceipt(rec);show("gracias");S.resetTimer=setTimeout(resetVoter,120000);
+  }catch(e){
+    if(wrote){try{await store.del(vPath);}catch(_){}}
+    $("dlg-confirm").close();
+    if(e&&e.code==="dup")msg("ced-msg",e.text);
+    else if(e&&e.code==="closed")resetVoter();
+    else if(e&&e.code==="quota_exceeded")msg("ced-msg","Se alcanzó el límite de almacenamiento. Avise al comité electoral.");
+    else msg("ced-msg","El voto no se pudo guardar. Revise la conexión y vuelva a emitirlo.");
+  }finally{btn.disabled=false;btn.textContent="Emitir voto";}});
+
+/* ---------- constancia ---------- */
+function renderReceipt(rec){const r=$("receipt");r.textContent="";
+  r.append(h("p",null,"El departamento"),h("div",{class:"r-dpto"},rec.dpto),
+    h("p",null,dot("emitió su voto el "+fmtFecha(rec.fecha)+" a las "+fmtHora(rec.fecha))),
+    h("p",null,"Votante: "+rec.nombre+", "+rec.tipo+" "+maskDoc(rec.doc)),
+    h("p",{class:"code"},"Código de verificación: "+rec.codigo));}
+function wrapText(x,text,X,Y,maxW,lh){const words=String(text).split(" ");let line="",y=Y;
+  for(const w of words){const t=line?line+" "+w:w;if(x.measureText(t).width>maxW&&line){x.fillText(line,X,y);line=w;y+=lh;}else line=t;}
+  if(line)x.fillText(line,X,y);return y;}
+async function receiptBlob(rec){try{await document.fonts.ready;}catch(_){}
+  const W=1080,H=1560,c=document.createElement("canvas");c.width=W;c.height=H;const x=c.getContext("2d");
+  const D='"Bricolage Grotesque","Segoe UI",sans-serif',B='"Atkinson Hyperlegible",Verdana,sans-serif';
+  const ink="#15303D",muted="#566D77",acc="#0F6E62",line="#C6D4D3";const L=96,R=W-96;
+  x.fillStyle="#FBFCFB";x.fillRect(0,0,W,H);x.fillStyle=acc;x.fillRect(0,0,W,24);
+  x.fillStyle=muted;x.font="700 34px "+B;x.fillText("Los Aires de Magdalena",L,128);
+  x.fillStyle=ink;x.font="800 80px "+D;x.fillText("Constancia de votación",L,226);
+  x.fillStyle=muted;x.font="400 34px "+B;x.fillText("Elección de la Junta Directiva, gestión 2026-2028",L,284);
+  x.strokeStyle=line;x.lineWidth=3;x.beginPath();x.moveTo(L,340);x.lineTo(R,340);x.stroke();
+  // sello
+  x.strokeStyle=acc;x.lineWidth=8;x.beginPath();x.arc(R-90,500,82,0,Math.PI*2);x.stroke();
+  x.lineCap="round";x.lineJoin="round";x.lineWidth=12;x.beginPath();x.moveTo(R-130,502);x.lineTo(R-102,532);x.lineTo(R-48,468);x.stroke();
+  x.fillStyle=muted;x.font="400 40px "+B;x.fillText("El departamento",L,440);
+  x.fillStyle=ink;x.font="800 200px "+D;x.fillText(rec.dpto,L-8,632);
+  x.fillStyle=muted;x.font="400 40px "+B;x.fillText("emitió su voto el",L,730);
+  x.fillStyle=ink;x.font="700 56px "+D;let y=wrapText(x,fmtFecha(rec.fecha),L,808,R-L,66);
+  x.fillText("a las "+fmtHora(rec.fecha),L,y+78);
+  y+=170;x.fillStyle=muted;x.font="400 34px "+B;y=wrapText(x,"Votante: "+rec.nombre+", "+rec.tipo+" "+maskDoc(rec.doc),L,y,R-L,46);
+  y+=70;x.fillStyle="#EAF0EF";x.fillRect(L,y,R-L,150);x.strokeStyle=ink;x.lineWidth=3;x.strokeRect(L,y,R-L,150);
+  x.fillStyle=muted;x.font="400 30px "+B;x.fillText("Código de verificación",L+36,y+56);
+  x.fillStyle=ink;x.font="800 58px "+D;x.fillText(rec.codigo,L+36,y+120);
+  x.fillStyle=muted;x.font="400 26px "+B;
+  wrapText(x,"Consultas al Comité Electoral por WhatsApp: "+CONTACTOS.map(c=>c.nombre+" ("+fmtTel(c.wa)+")").join(" o ")+".",L,H-270,R-L,36);
+  wrapText(x,"Esta constancia acredita que el departamento emitió su voto. No muestra la elección del votante.",L,H-170,R-L,36);
+  wrapText(x,"Comité Electoral, "+EDIF+", "+DIRECCION+".",L,H-90,R-L,36);
+  return new Promise(res=>c.toBlob(b=>res(b),"image/png"));}
+async function downloadReceipt(rec,msgId){try{const b=await receiptBlob(rec);
+  const ok=await saveFile("constancia-dpto-"+rec.dpto+"-"+fmtFechaNum(rec.fecha).replace(/\//g,"-")+".png",b,"image/png");
+  if(!ok&&msgId)msg(msgId,"No se pudo descargar la constancia en este dispositivo.");}
+  catch(_){if(msgId)msg(msgId,"No se pudo generar la constancia.");}}
+$("btn-receipt").addEventListener("click",()=>{if(S.last){clearTimeout(S.resetTimer);S.resetTimer=setTimeout(resetVoter,120000);downloadReceipt(S.last,"gr-msg");}});
+$("btn-next").addEventListener("click",resetVoter);
+
+/* ---------- descargas ---------- */
+async function saveFile(name,data,mime){const blob=data instanceof Blob?data:new Blob([data],{type:mime||"text/plain"});
+  if(downloads){try{await downloads.save({filename:name,data:blob});return true;}catch(e){if(e&&e.code==="unavailable"){downloads=null;}else return true;}}
+  try{const u=URL.createObjectURL(blob);const a=h("a",{href:u,download:name});document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),5000);return true;}catch(_){return false;}}
+function csv(rows){return"﻿"+rows.map(r=>r.map(x=>{const s=String(x??"");return/[",;\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s;}).join(",")).join("\r\n");}
+
+/* =========================================================
+   Acceso del comité
+   ========================================================= */
+$("btn-admin").addEventListener("click",async()=>{
+  if(!ready){await ask({title:"Panel no disponible",text:noStoreMsg,ok:"Entendido",noCancel:true});return;}
+  const c=cfg();
+  if(!c.hash){
+    const v=await ask({title:"Crear clave del comité",text:"Aún no existe una clave. Defina una de al menos 6 caracteres y compártala solo con los miembros del comité.",
+      fields:[{label:"Nueva clave",type:"password"},{label:"Repita la clave",type:"password"}],ok:"Crear clave e ingresar",
+      validate:([a,b])=>a.length<6?"La clave debe tener al menos 6 caracteres.":(a!==b?"Las claves no coinciden.":null)});
+    if(!v)return;const salt=rid();if(await saveCfg({salt,hash:await sha(salt+v[0])},false))openAdmin();return;}
+  let text="Ingrese la clave del comité electoral para ver el avance de la votación.";
+  for(;;){const v=await ask({title:"Acceso del comité",text,fields:[{label:"Clave",type:"password"}],ok:"Ingresar"});
+    if(!v)return;if(await sha(c.salt+v[0])===c.hash){openAdmin();return;}text="Clave incorrecta. Intente nuevamente.";}});
+
+/* =========================================================
+   Panel del comité
+   ========================================================= */
+function touch(){S.adminUntil=Date.now()+10*60*1000;}
+let idleTimer=null;
+function openAdmin(){clearTimeout(S.resetTimer);touch();show("admin");selTab("res");msg("adm-msg","");
+  S.unsubs.push(store.watch("voters",list=>{S.voters=list.sort((a,b)=>String(a.fecha).localeCompare(String(b.fecha)));renderRes();renderVot();}));
+  S.unsubs.push(store.watch("ballots",list=>{S.ballots=list;renderRes();}));
+  renderAdminAll();clearInterval(idleTimer);idleTimer=setInterval(()=>{if(Date.now()>S.adminUntil)lockAdmin();},15000);}
+function lockAdmin(){S.unsubs.forEach(u=>{try{u();}catch(_){}});S.unsubs=[];S.voters=[];S.ballots=[];S.importData=null;clearInterval(idleTimer);
+  ["t-res","t-vot","t-pad","t-cand","t-cfg"].forEach(i=>$(i).textContent="");resetVoter();}
+$("btn-lock").addEventListener("click",lockAdmin);
+$("v-admin").addEventListener("pointerdown",touch);$("v-admin").addEventListener("keydown",touch);
+document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>selTab(t.dataset.tab)));
+function selTab(k){S.tab=k;document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected",t.dataset.tab===k?"true":"false"));
+  ["res","vot","pad","cand","cfg"].forEach(x=>$("t-"+x).classList.toggle("hidden",x!==k));msg("adm-msg","");}
+function renderAdminAll(){renderRes();renderVot();renderPad();renderCand();renderCfg();}
+function isAdmin(){return S.view==="admin";}
+
+/* ---------- resultados ---------- */
+function allBallots(){return[...S.voters.filter(v=>v.votos).map(v=>v.votos),...S.ballots];}
+function tally(){const c=cfg(),out={},all=allBallots();
+  CARGOS.forEach(g=>{const m=new Map();c.cargos[g.key].forEach(p=>m.set(p.id,{nombre:p.nombre,dpto:p.dpto,n:0}));let blanco=0;
+    all.forEach(b=>{const x=b[g.key];if(!x)return;if(x.id==="blanco"){blanco++;return;}
+      if(!m.has(x.id))m.set(x.id,{nombre:(x.nombre||"Candidato retirado")+" (retirado)",n:0});m.get(x.id).n++;});
+    out[g.key]={rows:[...m.values()].sort((a,b)=>b.n-a.n),blanco};});return{out,total:all.length};}
+function renderRes(){if(!isAdmin())return;const root=$("t-res");root.textContent="";const{out,total}=tally();
+  const habs=[...P.units.entries()].filter(([,u])=>unitHab(u)).map(([k])=>k),N=habs.length,dv=habs.filter(d=>P.voted.has(d)).length,pct=N?Math.round(dv*1000/N)/10:0,e=estado();
+  root.append(h("p",{style:"margin:0 0 1rem"},"Estado: ",h("span",{class:"pill "+(e.ok?"ok":"no")},e.ok?"Votación abierta":e.t)));
+  root.append(h("div",{class:"stats"},h("div",null,h("b",null,total),h("span",null,total===1?"voto emitido":"votos emitidos")),h("div",null,h("b",null,dv+" de "+N),h("span",null,"departamentos habilitados votaron")),h("div",null,h("b",null,pct+"%"),h("span",null,"participación"))));
+  CARGOS.forEach(g=>{const r=out[g.key],box=h("div",{class:"res"},h("h3",null,g.label));
+    const top=r.rows.length?r.rows[0].n:0,tie=r.rows.filter(x=>x.n===top&&top>0).length>1;
+    r.rows.forEach((x,i)=>box.append(bar(x.nombre+(x.dpto?" (Dpto. "+x.dpto+")":""),x.n,total,i===0&&top>0&&!tie)));
+    box.append(bar("Voto en blanco",r.blanco,total,false));
+    if(tie)box.append(h("p",{class:"hint",style:"margin:.3rem 0 0"},"Hay empate en el primer lugar."));
+    root.append(box);});
+  root.append(h("div",{class:"actions"},h("button",{class:"btn small",type:"button",onclick:exportRes},"Descargar resultados (CSV)")));}
+function bar(label,n,total,lead){const pct=total?Math.round(n*1000/total)/10:0;
+  return h("div",{class:"bar"+(lead?" lead":"")},h("div",{class:"lbl"},h("b",null,label),h("span",null,plural(n,"voto","votos")+", "+pct+"%")),h("div",{class:"track"},h("div",{class:"fill",style:"width:"+pct+"%"})));}
+function exportRes(){const{out,total}=tally(),rows=[["Cargo","Opción","Votos","Porcentaje"]];
+  CARGOS.forEach(g=>{out[g.key].rows.forEach(x=>rows.push([g.label,x.nombre,x.n,total?(x.n*100/total).toFixed(1)+"%":"0%"]));rows.push([g.label,"Voto en blanco",out[g.key].blanco,total?(out[g.key].blanco*100/total).toFixed(1)+"%":"0%"]);});
+  rows.push([],["Total de votos",total],["Departamentos habilitados que votaron",[...P.units.entries()].filter(([k,u])=>unitHab(u)&&P.voted.has(k)).length+" de "+[...P.units.values()].filter(unitHab).length]);
+  saveFile("resultados-los-aires-de-magdalena-2026-2028.csv",csv(rows),"text/csv");}
+
+/* ---------- votantes (registro completo del voto) ---------- */
+function renderVot(){if(!isAdmin())return;const root=$("t-vot");root.textContent="";
+  const list=S.voters.filter(v=>v.fecha);
+  root.append(h("p",{class:"hint",style:"margin-top:0"},plural(list.length,"voto registrado","votos registrados")+", con departamento, DNI, nombre, elección por cargo, fecha y hora."));
+  if(!list.length){root.append(h("div",{class:"empty"},"Todavía no hay votos registrados."));return;}
+  const tb=h("tbody");list.forEach((v,i)=>tb.append(h("tr",null,h("td",{class:"num"},i+1),h("td",null,fmtFechaNum(v.fecha)),h("td",null,fmtHora(v.fecha)),h("td",null,v.dpto),h("td",null,v.nombre),h("td",null,v.tipo+" "+v.doc),
+    CARGOS.map(g=>h("td",null,v.votos&&v.votos[g.key]?v.votos[g.key].nombre:"")),h("td",null,v.codigo||""),
+    h("td",null,v.codigo?h("button",{class:"btn small",type:"button",onclick:()=>downloadReceipt(v,"adm-msg")},"Constancia"):""))));
+  root.append(h("div",{class:"tablewrap"},h("table",null,h("thead",null,h("tr",null,["N.°","Fecha","Hora","Dpto.","Nombre","Documento",...CARGOS.map(g=>g.label),"Código",""].map(x=>h("th",null,x)))),tb)));
+  root.append(h("div",{class:"actions"},h("button",{class:"btn small",type:"button",onclick:exportVot},"Descargar registro de votos (CSV)")));}
+function exportVot(){const rows=[["N.°","Fecha","Hora","Departamento","Nombres y apellidos","Tipo","Documento",...CARGOS.map(g=>g.label),"Código de verificación"]];
+  S.voters.filter(v=>v.fecha).forEach((v,i)=>rows.push([i+1,fmtFechaNum(v.fecha),fmtHora(v.fecha),v.dpto,v.nombre,v.tipo,v.doc,...CARGOS.map(g=>v.votos&&v.votos[g.key]?v.votos[g.key].nombre:""),v.codigo||""]));
+  saveFile("registro-de-votos-los-aires-de-magdalena-2026-2028.csv",csv(rows),"text/csv");}
+
+/* ---------- padrón: carga de Excel ---------- */
+function renderPad(){if(!isAdmin())return;const root=$("t-pad");root.textContent="";
+  const units=[...P.units.values()].sort(natSort);
+  const sinEstado=units.filter(u=>!u.estados).length;
+  if(sinEstado)root.append(h("div",{class:"msg show err",style:"margin:0 0 1rem"},sinEstado+" departamentos se cargaron sin columna de estado y figuran como INHABILITADO. Vuelva a cargar el Excel con la columna \u201cHabilitado\u201d (SI o NO) eligiendo \u201cReemplazar el padrón actual\u201d."));
+  root.append(h("p",{class:"hint",style:"margin-top:0"},units.length+" departamentos en el padrón, "+units.filter(unitHab).length+" habilitados para votar. Solo vota quien ingresa un DNI con estado HABILITADO."));
+  const file=h("input",{type:"file",accept:".xlsx,.xls,.csv",onchange:e=>{const f=e.target.files&&e.target.files[0];if(f)readExcel(f);e.target.value="";}});
+  root.append(h("h3",{class:"section-t"},"Cargar padrón desde Excel"),
+    h("label",{class:"drop"},file,h("b",null,"Elegir archivo Excel o CSV"),h("span",{class:"hint"},"Se leen las columnas \u201cNúmero de documento de identidad\u201d, \u201cApellidos y nombres completos\u201d, la de departamento y \u201cHabilitado\u201d (SI o NO). Las demás columnas se ignoran.")),
+    h("div",{class:"actions",style:"margin-top:.6rem"},h("button",{class:"btn small",type:"button",onclick:downloadTemplate},"Descargar plantilla de ejemplo")));
+  if(S.importData)root.append(renderImportPreview());
+  const d=h("input",{type:"text",placeholder:"Dpto.","aria-label":"Departamento"}),k=h("input",{type:"text",placeholder:"DNI",inputmode:"numeric","aria-label":"DNI"}),nm=h("input",{type:"text",placeholder:"Apellidos y nombres (opcional)","aria-label":"Apellidos y nombres"});
+  root.append(h("h3",{class:"section-t"},"Agregar un DNI manualmente"),h("div",{class:"addrow",style:"grid-template-columns:90px 120px 1fr auto"},d,k,nm,h("button",{class:"btn small primary",type:"button",onclick:()=>addProp(d,k,nm)},"Agregar")));
+  root.append(h("h3",{class:"section-t"},"Padrón actual"));
+  if(!units.length){root.append(h("div",{class:"empty"},"Cargue el Excel del padrón o agregue el primer departamento."));return;}
+  const tb=h("tbody");units.forEach(u=>{const n=normDpto(u.dpto);
+    const cell=h("td",{style:"white-space:normal"},unitDnis(u).map(x=>{const ok=habilitado(u,x);return h("div",{style:"display:flex;flex-wrap:wrap;gap:.4rem;align-items:center;margin:.15rem 0"},
+      h("span",null,x+(nombreDe(u,x)?" ("+nombreDe(u,x)+")":"")),h("span",{class:"pill "+(ok?"ok":"no")},ok?HAB:NOHAB),
+      h("button",{class:"linkbtn",type:"button",style:"padding:0",onclick:()=>toggleHab(u,x)},ok?"Inhabilitar":"Habilitar"));}));
+    tb.append(h("tr",null,h("td",null,u.dpto),cell,h("td",null,P.voted.has(n)?"Votó":(unitHab(u)?"Pendiente":"Inhabilitado")),h("td",null,h("button",{class:"btn small danger",type:"button",onclick:()=>delProp(u)},"Retirar"))));});
+  root.append(h("div",{class:"tablewrap"},h("table",null,h("thead",null,h("tr",null,["Dpto.","DNI, nombre y habilitación","Estado",""].map(x=>h("th",null,x)))),tb)));
+  root.append(h("div",{class:"actions"},h("button",{class:"btn small",type:"button",onclick:exportPad},"Descargar padrón (CSV)"),h("button",{class:"btn small danger",type:"button",onclick:clearPad},"Vaciar padrón")));}
+
+async function readExcel(f){msg("adm-msg","");
+  if(!window.XLSX){msg("adm-msg","No se pudo cargar el lector de Excel. Revise la conexión a internet y recargue la página.");return;}
+  try{const wb=XLSX.read(await f.arrayBuffer(),{type:"array"});const sheet=wb.SheetNames[0];
+    const rows=XLSX.utils.sheet_to_json(wb.Sheets[sheet],{header:1,defval:"",raw:false,blankrows:false});
+    const res=parsePadron(rows);
+    if(res.error){S.importData=null;msg("adm-msg",res.error);renderPad();return;}
+    S.importData=Object.assign(res,{archivo:f.name,hoja:sheet,modo:"reemplazar"});renderPad();}
+  catch(_){S.importData=null;msg("adm-msg","No se pudo leer el archivo. Verifique que sea un Excel (.xlsx o .xls) o un CSV.");}}
+function parsePadron(rows){
+  const nz=x=>String(x??"").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/\s+/g," ").trim();
+  const score=(cell,rules,bad)=>{const t=nz(cell);if(!t||(bad&&bad.test(t)))return 0;for(const[re,sc]of rules)if(re.test(t))return sc;return 0;};
+  const DNI_R=[[/numero de documento de identidad/,100],[/(numero|nro|n°|nº|n) ?\.? de documento/,90],[/\bdni\b/,80],[/documento de identidad/,70],[/^(documento|doc\.?)$/,60]];
+  const EST_R=[[/^(estado|estatus|status|condicion|situacion)( de habilitacion)?$/,100],[/habilitad|habilitacion/,90],[/estado|estatus|status|condicion|situacion|\bhabil\b/,70]];
+  const NOM_R=[[/apellidos y nombres completos/,100],[/apellidos y nombres|nombres y apellidos/,90],[/nombre completo/,80],[/^(nombres?|propietario)$/,60]];
+  const DPTO_R=[[/(numero|nro|n°|nº|n) ?\.? de (departamento|dpto|depto)/,100],[/^(departamento|dpto\.?|depto\.?|depa)$/,95],[/departamento|dpto|depto|\bdepa\b/,80],[/unidad|inmueble|interior/,60]];
+  const best=(row,rules,bad)=>{let bi=-1,bs=0;row.forEach((c,i)=>{const sc=score(c,rules,bad);if(sc>bs){bs=sc;bi=i;}});return bi;};
+  let hr=-1,dc=-1,kc=-1,nc=-1,ec=-1;
+  for(let r=0;r<Math.min(rows.length,20);r++){const row=rows[r];
+    const k=best(row,DNI_R,/\btipo\b/),d=best(row,DPTO_R,/documento|\bdni\b|correo|nombre|apellido|telefono|celular|whatsapp/);
+    if(k>=0&&d>=0&&k!==d){hr=r;kc=k;dc=d;nc=best(row,NOM_R,/documento|\bdni\b|correo/);ec=best(row,EST_R,/documento|\bdni\b|correo|nombre|apellido|civil|departamento|dpto/);break;}}
+  if(hr<0)return{error:"No se encontraron las columnas \"Número de documento de identidad\" y \"Departamento\". Revise que la primera fila del Excel tenga esos encabezados."};
+  if(ec<0)return{error:"No se encontró la columna \"Habilitado\". Agregue esa columna con SI o NO: solo podrán votar los que digan SI."};
+  const map=new Map(),omit=[];let filas=0,conNombre=0,nHab=0,nNoHab=0;
+  for(let r=hr+1;r<rows.length;r++){const row=rows[r];const rawD=String(row[dc]??"").trim(),rawK=String(row[kc]??"").trim();
+    if(!rawD&&!rawK)continue;filas++;
+    const m=rawD.match(/\d{3,4}/);const dpto=m?String(parseInt(m[0],10)):normDpto(rawD);
+    const dnis=(rawK.toUpperCase().match(/[A-Z0-9]+/g)||[]).map(normDoc).filter(validDoc);
+    const nombre=nc>=0?String(row[nc]??"").trim().replace(/\s+/g," "):"";
+    const ev=nz(row[ec]).replace(/[.\s]+$/,"");const est=(ev==="si"||ev==="habilitado")?HAB:NOHAB;
+    if(!dpto){omit.push("Fila "+(r+1)+": departamento vacío");continue;}
+    if(!dnis.length){omit.push("Fila "+(r+1)+" (Dpto. "+dpto+"): número de documento vacío o inválido");continue;}
+    if(!map.has(dpto))map.set(dpto,new Map());
+    dnis.forEach(x=>{const cur=map.get(dpto),prev=cur.get(x)||{nombre:"",estado:HAB};cur.set(x,{nombre:nombre||prev.nombre,estado:est});});}
+  if(!map.size)return{error:"El archivo no tiene filas válidas con departamento y número de documento."};
+  map.forEach(mm=>mm.forEach(v=>{if(v.nombre)conNombre++;if(v.estado===HAB)nHab++;else nNoHab++;}));
+  const fuera=[...map.keys()].filter(d=>!ESTRUCTURA_SET.has(d)).sort((a,b)=>a.localeCompare(b,"es",{numeric:true}));
+  const faltan=ESTRUCTURA.filter(d=>!map.has(d));
+  const head=rows[hr];
+  return{map,omit,fuera,faltan,filas,conNombre,cols:{dni:String(head[kc]),dpto:String(head[dc]),nombre:nc>=0?String(head[nc]):"",estado:ec>=0?String(head[ec]):""},nHab,nNoHab,dHab:[...map.values()].filter(mm=>[...mm.values()].some(v=>v.estado===HAB)).length,totalDni:[...map.values()].reduce((s,x)=>s+x.size,0)};}
+function renderImportPreview(){const d=S.importData;
+  const box=h("div",{class:"preview"},h("h3",null,"Vista previa: "+d.archivo),
+    h("p",{style:"margin:.4rem 0"},d.map.size+" departamentos y "+d.totalDni+" DNI encontrados en "+d.filas+" filas (hoja "+d.hoja+"). "+d.conNombre+" con nombre."),
+    h("ul",null,h("li",null,"DNI: columna \u201c"+d.cols.dni+"\u201d"),h("li",null,"Departamento: columna \u201c"+d.cols.dpto+"\u201d"),h("li",null,d.cols.nombre?"Nombre: columna \u201c"+d.cols.nombre+"\u201d":"Nombre: no se encontró la columna; el votante lo escribirá al registrarse"),h("li",null,"Habilitación: columna \u201c"+d.cols.estado+"\u201d. Solo vota quien diga SI; quien diga NO (o esté vacío) queda INHABILITADO."),h("li",null,"Las demás columnas se ignoran.")),
+    h("p",{style:"margin:.6rem 0 0"},h("b",null,plural(d.nHab,"DNI habilitado","DNI habilitados")+" y "+plural(d.nNoHab,"inhabilitado","inhabilitados")+". "),d.dHab+" de "+d.map.size+" departamentos podrán votar; los demás quedan registrados como INHABILITADO y no pueden votar."));
+  if(d.omit.length){box.append(h("p",{style:"margin:.6rem 0 0;font-weight:700"},plural(d.omit.length,"fila omitida","filas omitidas")),h("ul",null,d.omit.slice(0,8).map(x=>h("li",null,x)),d.omit.length>8?h("li",null,"y "+(d.omit.length-8)+" más"):null));}
+  if(d.fuera.length)box.append(h("p",{style:"margin:.6rem 0 0"},h("b",null,"No coinciden con la estructura del edificio: "),d.fuera.join(", ")+". Se importarán igual; revise si hay un error de digitación."));
+  if(d.faltan.length)box.append(h("p",{style:"margin:.6rem 0 0"},h("b",null,d.faltan.length+" departamentos del edificio no figuran en el archivo: "),d.faltan.join(", ")+"."));
+  const mk=(val,txt,sub)=>{const r=h("input",{type:"radio",name:"imp-modo",value:val});r.checked=d.modo===val;r.addEventListener("change",()=>{d.modo=val;});
+    return h("label",{class:"radio-row"},r,h("span",null,h("b",null,txt),h("br"),h("span",{class:"hint"},sub)));};
+  box.append(h("div",{style:"margin-top:.8rem"},mk("reemplazar","Reemplazar el padrón actual","Recomendado para la carga inicial. Retira los departamentos que no estén en el archivo."),mk("agregar","Agregar al padrón actual","Suma los DNI nuevos y conserva los ya registrados.")));
+  const go=h("button",{class:"btn small primary",type:"button",disabled:!!S.importing},S.importing?S.importProg:"Importar padrón");
+  go.addEventListener("click",()=>importPadron(go));
+  box.append(h("div",{class:"actions"},h("button",{class:"btn small",type:"button",onclick:()=>{S.importData=null;renderPad();}},"Cancelar"),go));
+  return box;}
+async function importPadron(btn){const d=S.importData;if(!d)return;
+  if(d.modo==="reemplazar"&&P.voted.size){const ok=await ask({title:"Ya hay votos registrados",text:"Reemplazar el padrón no borra los votos emitidos, pero puede retirar departamentos que ya votaron. ¿Desea continuar?",ok:"Reemplazar padrón",danger:true});if(!ok)return;}
+  S.importing=true;const entries=[...d.map.entries()];let i=0;
+  const prog=t=>{S.importProg=t;const b=document.querySelector("#t-pad .preview .btn.primary");if(b){b.disabled=true;b.textContent=t;}};
+  try{for(const[dpto,set]of entries){i++;prog("Importando "+i+" de "+entries.length+"...");
+      const prev=P.units.get(dpto),keep=d.modo==="agregar"&&prev;
+      const dnis=keep?[...new Set([...unitDnis(prev),...set.keys()])]:[...set.keys()];
+      const personas=Object.assign({},keep&&prev.personas||{}),estados={};
+      if(keep)unitDnis(prev).forEach(x=>{estados[x]=habilitado(prev,x)?HAB:NOHAB;});
+      set.forEach((v,k)=>{if(v.nombre)personas[k]=v.nombre;estados[k]=v.estado;});
+      await store.set("padron/u-"+dpto,{dpto,dnis,personas,estados,nombre:"Propietario Dpto. "+dpto,origen:"excel",actualizado:new Date().toISOString()});}
+    if(d.modo==="reemplazar"){for(const k of[...P.units.keys()])if(!d.map.has(k))await store.del("padron/u-"+k);}
+    S.importing=false;S.importData=null;msg("adm-msg","Padrón importado: "+entries.length+" departamentos, "+d.dHab+" habilitados para votar.","info");renderPad();}
+  catch(_){S.importing=false;renderPad();msg("adm-msg","La importación quedó incompleta en el departamento "+(entries[i-1]||[""])[0]+". Vuelva a importar el archivo.");}}
+function downloadTemplate(){if(!window.XLSX){msg("adm-msg","No se pudo cargar el generador de Excel. Revise la conexión.");return;}
+  const ws=XLSX.utils.aoa_to_sheet([["Marca temporal","Apellidos y nombres completos","Número de documento de identidad","Departamento","Habilitado","Correo electrónico"],["25/10/2026 10:00","Pérez García, Ana","12345678","101","SI","ejemplo@correo.com"],["25/10/2026 10:05","Rojas Soto, Luis","87654321","1404","SI",""],["25/10/2026 10:07","Díaz Vega, María","11223344","1404","SI",""],["25/10/2026 10:09","Torres León, Carlos","55667788","302","NO",""]]);
+  ws["!cols"]=[{wch:18},{wch:36},{wch:30},{wch:14},{wch:18},{wch:26}];const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,"Padrón");
+  const out=XLSX.write(wb,{bookType:"xlsx",type:"array"});
+  saveFile("plantilla-padron-los-aires-de-magdalena.xlsx",new Blob([out],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));}
+async function addProp(dIn,kIn,nIn){const dpto=normDpto(dIn.value),doc=normDoc(kIn.value),nombre=(nIn&&nIn.value||"").trim().replace(/\s+/g," ");
+  if(!dpto)return msg("adm-msg","Indique el departamento.");if(!validDoc(doc))return msg("adm-msg","Ingrese un DNI válido de 8 dígitos o un carné de extranjería.");
+  const prev=P.units.get(dpto);const dnis=[...new Set([...unitDnis(prev),doc])];
+  const personas=Object.assign({},prev&&prev.personas||{});if(prev&&!prev.personas&&prev.doc&&nombreDe(prev,normDoc(prev.doc)))personas[normDoc(prev.doc)]=prev.nombre;if(nombre)personas[doc]=nombre;
+  const estados={};unitDnis(prev).forEach(x=>{estados[x]=habilitado(prev,x)?HAB:NOHAB;});estados[doc]=HAB;
+  try{await store.set("padron/u-"+dpto,{dpto,dnis,personas,estados,nombre:"Propietario Dpto. "+dpto,origen:"manual",actualizado:new Date().toISOString()});
+    msg("adm-msg","DNI agregado como HABILITADO al departamento "+dpto+(ESTRUCTURA_SET.has(dpto)?".":". Atención: este número no coincide con la estructura del edificio."),"info");}
+  catch(_){msg("adm-msg","No se pudo guardar el departamento.");}}
+async function toggleHab(u,doc){const ok=habilitado(u,doc),nuevo=ok?NOHAB:HAB;
+  const conf=await ask({title:ok?"Inhabilitar DNI":"Habilitar DNI",text:"El DNI "+doc+(nombreDe(u,doc)?" ("+nombreDe(u,doc)+")":"")+" del departamento "+u.dpto+" quedará como "+nuevo+".",ok:ok?"Inhabilitar":"Habilitar",danger:ok});if(!conf)return;
+  const estados={};unitDnis(u).forEach(x=>{estados[x]=habilitado(u,x)?HAB:NOHAB;});estados[doc]=nuevo;
+  const rest=Object.assign({},u);delete rest.id;
+  try{await store.set("padron/u-"+normDpto(u.dpto),Object.assign(rest,{estados,actualizado:new Date().toISOString()}));msg("adm-msg","DNI "+doc+" ahora figura como "+nuevo+".","info");}
+  catch(_){msg("adm-msg","No se pudo actualizar el estado.");}}
+async function delProp(u){const ok=await ask({title:"Retirar departamento",text:"¿Retirar el departamento "+u.dpto+" del padrón? Sus propietarios no podrán votar.",ok:"Retirar",danger:true});if(!ok)return;
+  try{await store.del("padron/u-"+normDpto(u.dpto));msg("adm-msg","Departamento "+u.dpto+" retirado.","info");}catch(_){msg("adm-msg","No se pudo retirar el departamento.");}}
+async function clearPad(){const v=await ask({title:"Vaciar padrón",text:"Se retirarán todos los departamentos del padrón. Los votos emitidos se conservan. Escriba VACIAR para confirmar.",fields:[{label:"Confirmación"}],ok:"Vaciar padrón",danger:true,validate:([t])=>t.trim().toUpperCase()!=="VACIAR"?"Escriba VACIAR para confirmar.":null});if(!v)return;
+  try{for(const k of[...P.units.keys()])await store.del("padron/u-"+k);msg("adm-msg","El padrón quedó vacío.","info");}catch(_){msg("adm-msg","El padrón no se vació por completo. Intente nuevamente.");}}
+function exportPad(){const rows=[["Departamento","Número de documento de identidad","Apellidos y nombres completos","Habilitación","Estado del voto"]];
+  [...P.units.values()].sort(natSort).forEach(u=>unitDnis(u).forEach(d=>rows.push([u.dpto,d,nombreDe(u,d),habilitado(u,d)?HAB:NOHAB,P.voted.has(normDpto(u.dpto))?"Votó":(unitHab(u)?"Pendiente":"Inhabilitado")])));
+  saveFile("padron-los-aires-de-magdalena-2026-2028.csv",csv(rows),"text/csv");}
+
+/* ---------- candidatos ---------- */
+function renderCand(){if(!isAdmin())return;const root=$("t-cand"),c=cfg();root.textContent="";
+  root.append(h("p",{class:"hint",style:"margin-top:0"},"Cargos según el Reglamento Interno. Los cambios se reflejan de inmediato en la cédula."));
+  CARGOS.forEach(g=>{const list=c.cargos[g.key],ul=h("ul",{class:"cand-list"});
+    if(!list.length)ul.append(h("li",{class:"hint"},"Sin candidatos registrados."));
+    list.forEach(p=>ul.append(h("li",null,h("span",null,h("b",null,p.nombre),p.dpto?", Dpto. "+p.dpto:""),h("button",{class:"btn small danger",type:"button",onclick:()=>removeCand(g.key,p.id,p.nombre)},"Retirar"))));
+    const n=h("input",{type:"text",placeholder:"Nombre completo","aria-label":"Nombre del candidato a "+g.label}),d=h("input",{type:"text",placeholder:"Dpto.","aria-label":"Departamento"});
+    root.append(h("h3",null,g.label),ul,h("div",{class:"addrow"},n,d,h("button",{class:"btn small primary",type:"button",onclick:()=>addCand(g.key,n,d)},"Agregar")));});}
+async function addCand(key,nIn,dIn){const nombre=nIn.value.trim().replace(/\s+/g," "),dpto=dIn.value.trim();if(nombre.length<3)return msg("adm-msg","Escriba el nombre completo del candidato.");
+  const cargos=JSON.parse(JSON.stringify(cfg().cargos));cargos[key]=[...cargos[key],{id:"c-"+rid(),nombre,dpto}];await saveCfg({cargos},"Candidato agregado.");}
+async function removeCand(key,id,nombre){const votes=allBallots().filter(b=>b[key]&&b[key].id===id).length;
+  const ok=await ask({title:"Retirar candidato",text:"¿Retirar a "+nombre+"?"+(votes?" Ya tiene "+votes+" voto(s); seguirán contando como candidato retirado.":""),ok:"Retirar",danger:true});if(!ok)return;
+  const cargos=JSON.parse(JSON.stringify(cfg().cargos));cargos[key]=cargos[key].filter(p=>p.id!==id);await saveCfg({cargos},"Candidato retirado.");}
+
+/* ---------- horario y ajustes ---------- */
+function renderCfg(){if(!isAdmin())return;const root=$("t-cfg"),c=cfg(),e=estado();root.textContent="";
+  const ini=h("input",{type:"datetime-local",id:"cfg-ini",value:c.inicio}),fin=h("input",{type:"datetime-local",id:"cfg-fin",value:c.fin});
+  root.append(h("h3",{style:"margin-top:0"},"Horario de votación"),
+    h("p",{class:"hint",style:"margin:.2rem 0"},"Hora de Lima. Antes del inicio y después del cierre, la cédula no acepta votos."),
+    h("div",{class:"sched-grid"},h("label",null,h("span",{class:"f",style:"margin-top:0"},"Inicio"),ini),h("label",null,h("span",{class:"f",style:"margin-top:0"},"Cierre"),fin)),
+    h("p",{style:"margin:.4rem 0"},"Estado actual: ",h("span",{class:"pill "+(e.ok?"ok":"no")},e.ok?"Votación abierta":e.t)),
+    h("div",{class:"actions",style:"margin-top:.6rem"},h("button",{class:"btn small primary",type:"button",onclick:saveSched},"Guardar horario"),h("button",{class:"btn small",type:"button",onclick:clearSched},"Quitar horario")));
+  const open=h("input",{type:"checkbox",class:"switch",checked:c.open,"aria-label":"Votación habilitada",onchange:ev=>saveCfg({open:ev.target.checked})});
+  root.append(h("h3",{class:"section-t"},"Ajustes"),
+    h("div",{class:"setting"},h("div",null,h("b",null,"Votación habilitada"),h("p",null,"Interruptor general. Si lo desactiva, la votación se cierra aunque esté dentro del horario.")),open),
+    h("div",{class:"setting"},h("div",null,h("b",null,"Un voto por departamento"),h("p",null,"Regla fija. Vota el primer DNI registrado que ingrese; el departamento queda bloqueado para los demás DNI.")),h("span",{class:"pill ok"},"Siempre activa")),
+    h("div",{class:"setting"},h("div",null,h("b",null,"Cambiar clave del comité"),h("p",null,"Se pedirá la nueva clave en el siguiente ingreso.")),h("button",{class:"btn small",type:"button",onclick:changeKey},"Cambiar clave")),
+    h("div",{class:"setting"},h("div",null,h("b",null,"Respaldo"),h("p",null,"Descarga un archivo con padrón, candidatos, horario y votos.")),h("button",{class:"btn small",type:"button",onclick:backup},"Descargar respaldo")),
+    h("div",{class:"setting"},h("div",null,h("b",null,"Reiniciar votación"),h("p",null,"Borra todos los votos registrados. El padrón, los candidatos, el horario y la clave se mantienen.")),h("button",{class:"btn small danger",type:"button",onclick:resetAll},"Reiniciar")),
+    h("p",{class:"hint",style:"margin-top:1rem"},store.kind==="local"?"Modo mesa de votación: los datos se guardan solo en este navegador. Descargue un respaldo al cerrar la votación.":"Los datos se guardan en la cuenta del comité en claude.ai."));}
+async function saveSched(){const a=$("cfg-ini").value,b=$("cfg-fin").value;
+  if(!a&&!b)return msg("adm-msg","Indique al menos la fecha y hora de inicio o de cierre.");
+  if(a&&b&&parseLocal(b)<=parseLocal(a))return msg("adm-msg","El cierre debe ser posterior al inicio.");
+  if(await saveCfg({inicio:a,fin:b},"Horario guardado.")){renderSchedule();renderCfg();renderRes();}}
+async function clearSched(){if(await saveCfg({inicio:"",fin:""},"Horario retirado. La votación depende solo del interruptor general.")){renderSchedule();renderCfg();renderRes();}}
+async function changeKey(){const v=await ask({title:"Cambiar clave del comité",fields:[{label:"Nueva clave",type:"password"},{label:"Repita la nueva clave",type:"password"}],ok:"Guardar clave",
+  validate:([a,b])=>a.length<6?"La clave debe tener al menos 6 caracteres.":(a!==b?"Las claves no coinciden.":null)});
+  if(!v)return;const salt=rid();await saveCfg({salt,hash:await sha(salt+v[0])},"Clave actualizada.");}
+async function backup(){try{const data={exportado:new Date().toISOString(),config:Object.assign({},cfg(),{hash:undefined,salt:undefined}),
+    padron:await store.list("padron"),votos:await store.list("voters"),dptos:await store.list("dptos")};
+  await saveFile("respaldo-votaciones-los-aires-de-magdalena.json",JSON.stringify(data,null,2),"application/json");}catch(_){msg("adm-msg","No se pudo generar el respaldo.");}}
+async function resetAll(){
+  const v=await ask({title:"Reiniciar votación",text:"Esta acción borra todos los votos registrados y no se puede deshacer. Le recomendamos descargar un respaldo antes. Escriba REINICIAR para confirmar.",
+    fields:[{label:"Confirmación"}],ok:"Borrar votos",danger:true,validate:([t])=>t.trim().toUpperCase()!=="REINICIAR"?"Escriba REINICIAR para confirmar.":null});
+  if(!v)return;msg("adm-msg","Borrando votos...","info");
+  try{let n=0;for(const col of["voters","dptos","ballots"]){const docs=await store.list(col);for(const d of docs){await store.del(col+"/"+d.id);n++;}}
+    msg("adm-msg","La votación fue reiniciada. Se borraron "+n+" registros.","info");}
+  catch(_){msg("adm-msg","El reinicio quedó incompleto. Vuelva a intentarlo.");}}
+
+/* =========================================================
+   Arranque
+   ========================================================= */
+CONTACTOS.forEach(c=>$("help-list").append(h("li",null,h("a",{href:"https://wa.me/51"+c.wa+"?text="+encodeURIComponent("Hola, tengo una consulta sobre la votación de la Junta Directiva 2026-2028 de Los Aires de Magdalena."),target:"_blank",rel:"noopener"},c.nombre,h("span",null,"WhatsApp "+fmtTel(c.wa))))));
+show("registro");
+setInterval(()=>{if(!ready)return;renderSchedule();const e=estado();
+  if(!e.ok&&(S.view==="registro"||S.view==="cedula"))resetVoter();
+  else if(e.ok&&S.view==="aviso")resetVoter();
+  else if(S.view==="admin"&&(S.tab==="res"||S.tab==="cfg")){const pill=document.querySelector("#t-"+S.tab+" .pill");if(pill){pill.className="pill "+(e.ok?"ok":"no");pill.textContent=e.ok?"Votación abierta":e.t;}}},10000);
+(async()=>{
+  const C=window.claude;
+  if(C&&typeof C.use==="function"){
+    let db=null;try{db=await C.use("db");}catch(_){db=null;}
+    try{downloads=await C.use("downloads");}catch(_){downloads=null;}
+    if(!db){noStoreMsg="Abra esta votación desde la cuenta del comité electoral en claude.ai para habilitar el registro de votos.";resetVoter();return;}
+    store=wrapDb(db);
+  }else store=makeLocalStore();
+  store.watchDoc("config/main",d=>{config=d;const first=!ready;ready=true;renderSchedule();
+    if(first){resetVoter();return;}
+    if(S.view==="cedula")renderBallot();
+    if(isAdmin()){renderCand();renderCfg();renderRes();}
+    const e=estado();if(!e.ok&&(S.view==="registro"||S.view==="cedula"))resetVoter();else if(e.ok&&S.view==="aviso")resetVoter();});
+  store.watch("padron",list=>{P.units=new Map(list.map(x=>[normDpto(x.dpto),x]));P.loaded=true;fillDpto();if(isAdmin()){renderPad();renderRes();}});
+  store.watch("dptos",list=>{P.voted=new Set(list.map(d=>d.id.replace(/^d-/,"")));fillDpto();if(isAdmin()){renderPad();renderRes();}});
+})();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+# Nunca suba el padrón real ni respaldos: contienen DNI (Ley N.° 29733)
+padron*.xlsx
+!plantilla-padron.xlsx
+*.csv
+respaldo-*.json
